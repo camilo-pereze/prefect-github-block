@@ -12,15 +12,15 @@ def fetch(dataset_url:str) -> pd.DataFrame:
     df = pd.read_csv(dataset_url)   
     return df
 
-# @task(log_prints=True)
-# def clean(df=pd.DataFrame) -> pd.DataFrame:
-#     """Fix dtype issues"""
-#     df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
-#     df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
-#     print(df.head(2))
-#     print(f"Columns: {df.dtypes}")
-#     print(f"Rows: {len(df)}")
-#     return df
+@task(log_prints=True)
+def clean(df=pd.DataFrame) -> pd.DataFrame:
+    """Fix dtype issues"""
+    df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
+    df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
+    print(df.head(2))
+    print(f"Columns: {df.dtypes}")
+    print(f"Rows: {len(df)}")
+    return df
 
 @task()
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
@@ -32,16 +32,16 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     df.to_parquet(path, compression="gzip")
     return path
 
-@task()
-def write_gcs(path: Path) -> None:
-    """Uploading local parquet file to GCS"""
-    gcp_bucket_block = GcsBucket.load("zoom-gcs")
-    gcp_bucket_block.upload_from_path(
-        from_path=path,
-        to_path=path,
-        timeout=600
+# @task()
+# def write_gcs(path: Path) -> None:
+#     """Uploading local parquet file to GCS"""
+#     gcp_bucket_block = GcsBucket.load("zoom-gcs")
+#     gcp_bucket_block.upload_from_path(
+#         from_path=path,
+#         to_path=path,
+#         timeout=600
 
-    ) 
+#     ) 
 
 
 
@@ -52,9 +52,9 @@ def etl_web_to_gcs(color, year, month) -> None:
     dataset_url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{color}/{dataset_file}.csv.gz"
     
     df = fetch(dataset_url)
-    # df_clean = clean(df)
+    df_clean = clean(df)
     path = write_local(df, color, dataset_file)
-    write_gcs(path)
+    # write_gcs(path)
 
 @flow()
 def parent_flow(params:list):
