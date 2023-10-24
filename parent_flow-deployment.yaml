@@ -1,23 +1,17 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'parent-flow'
 ###
-name: Yellow 2019 to GCS
+name: github_dep
 description: null
-version: fc24feb2ea1c36ee8c14a3878c79f8a8
+version: e04ef0e87f040015220ddb5e619d7120
 # The work queue that will handle this deployment's runs
 work_queue_name: default
-work_pool_name: default-agent-pool
+work_pool_name: null
 tags: []
 parameters: {}
 schedule: null
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides: {}
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: parent-flow
-manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -26,13 +20,25 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
-  _block_document_id: 473cd692-b889-4fe3-a970-7a6af14ef628
-  _block_document_name: anonymous-86e89e36-5c86-4e43-bb75-5803e9e5fc58
-  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
-storage: null
-path: /home/camilo/de-zoomcamp/de-zoomcamp-week2/homework
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: parent-flow
+manifest_path: null
+storage:
+  repository: https://github.com/camilo-pereze/prefect-github-block.git
+  reference: null
+  access_token: null
+  include_git_objects: true
+  _block_document_id: b3230968-9d5d-4331-8cbd-086765f4481d
+  _block_document_name: github-block
+  _is_anonymous: false
+  block_type_slug: github
+  _block_type_slug: github
+path: ''
 entrypoint: etl_web_to_gcs.py:parent_flow
 parameter_openapi_schema:
   title: Parameters
@@ -46,6 +52,6 @@ parameter_openapi_schema:
   required:
   - params
   definitions: null
-timestamp: '2023-10-21T13:48:42.654863+00:00'
+timestamp: '2023-10-24T01:53:24.101363+00:00'
 triggers: []
 enforce_parameter_schema: null

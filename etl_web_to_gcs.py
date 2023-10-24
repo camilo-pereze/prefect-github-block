@@ -58,6 +58,7 @@ def etl_web_to_gcs(color, year, month) -> None:
 
 @flow()
 def parent_flow(params:list):
+    params = [['green', 2020, 11]]
     for color, year, month in params:
         etl_web_to_gcs(color, year, month)
 
