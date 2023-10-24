@@ -53,7 +53,7 @@ def etl_web_to_gcs(color, year, month) -> None:
     
     df = fetch(dataset_url)
     df_clean = clean(df)
-    path = write_local(df, color, dataset_file)
+    path = write_local(df_clean, color, dataset_file)
     # write_gcs(path)
 
 @flow()
